@@ -14,7 +14,7 @@ public class RickAndMortyController {
         this.restTemplate = restTemplate;
     }
 
-    @GetMapping("/rickandmorty/random")
+    @GetMapping("/rickandmortyweb")
     public String getRandomCharacter(Model model) {
         // Hacer una solicitud a la API externa para obtener un personaje aleatorio
         String apiUrl = "https://rickandmortyapi.com/api/character/";
