@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 
+import com.cebem.medidor.models.RickandmortyCharacter;
+
 @Controller
 public class RickAndMortyController {
 
@@ -18,7 +20,7 @@ public class RickAndMortyController {
     public String getRandomCharacter(Model model) {
         // Hacer una solicitud a la API externa para obtener un personaje aleatorio
         String apiUrl = "https://rickandmortyapi.com/api/character/";
-        Character character = restTemplate.getForObject(apiUrl + "1", Character.class); // Aquí puedes usar otro endpoint para obtener un random
+        RickandmortyCharacter character = restTemplate.getForObject(apiUrl + "1", RickandmortyCharacter.class); // Aquí puedes usar otro endpoint para obtener un random
 
         // Agregar el personaje al modelo de Thymeleaf
         model.addAttribute("character", character);
