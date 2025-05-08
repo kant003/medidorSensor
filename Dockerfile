@@ -1,30 +1,26 @@
 # Etapa de construcción
-FROM ubuntu:latest AS build
-
-# Instala Java y dependencias
-RUN apt-get update && \
-    apt-get install -y openjdk-21-jdk
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 # Establece directorio de trabajo
 WORKDIR /app
 
-# Copia el proyecto completo
+# Copia el contenido del proyecto
 COPY . .
 
-# Genera el JAR usando Gradle Wrapper
-RUN ./gradlew bootJar --no-daemon
+# Empaqueta el proyecto sin ejecutar tests
+RUN mvn clean package -DskipTests
 
 # Etapa de ejecución
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 
-# Directorio de trabajo para el contenedor final
+# Establece directorio de trabajo
 WORKDIR /app
 
-# Expone el puerto 8080 (usado por Spring Boot)
+# Expone el puerto 8080
 EXPOSE 8080
 
-# Copia el JAR desde la etapa de build
-COPY --from=build /app/build/libs/*.jar app.jar
+# Copia el JAR generado
+COPY --from=build /app/target/*.jar app.jar
 
-# Establece el comando de inicio
+# Establece el comando para ejecutar el JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
